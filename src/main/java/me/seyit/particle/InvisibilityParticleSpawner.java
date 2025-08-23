@@ -5,6 +5,8 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.ParticlesMode;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.particle.EntityEffectParticleEffect;
+import net.minecraft.particle.ParticleTypes;
 
 public class InvisibilityParticleSpawner {
     private static int tickCounter = 0;
@@ -49,11 +51,11 @@ public class InvisibilityParticleSpawner {
                     double sizeOffsetZ = (Math.random() - 0.5) * particleSize;
                     
                     client.world.addParticle(
-                        net.minecraft.particle.ParticleTypes.ENTITY_EFFECT,
+                            EntityEffectParticleEffect.create(ParticleTypes.ENTITY_EFFECT, (float)red, (float)green, (float)blue),
                         client.player.getX() + offsetX + sizeOffsetX,
                         client.player.getY() + offsetY + sizeOffsetY,
                         client.player.getZ() + offsetZ + sizeOffsetZ,
-                        red, green, blue
+                        0, 0, 0
                     );
                 }
             }
