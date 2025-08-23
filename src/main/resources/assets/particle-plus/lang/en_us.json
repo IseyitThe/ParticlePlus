@@ -1,0 +1,19 @@
+{
+  "text.autoconfig.particle-plus.title": "Particle Plus Configuration",
+  "text.autoconfig.particle-plus.category.default": "General Settings",
+  
+  "text.autoconfig.particle-plus.option.particleMultiplier": "Particle Count",
+  "text.autoconfig.particle-plus.option.particleMultiplier.@Tooltip": "How many particles to spawn when invisible (1-20)",
+  
+  "text.autoconfig.particle-plus.option.particleSize": "Particle Size",
+  "text.autoconfig.particle-plus.option.particleSize.@Tooltip": "Size multiplier for each particle (1-10x)",
+  
+  "text.autoconfig.particle-plus.option.redValue": "Red Color",
+  "text.autoconfig.particle-plus.option.redValue.@Tooltip": "Red color component (0-255). Default: 255 (White)",
+  
+  "text.autoconfig.particle-plus.option.greenValue": "Green Color", 
+  "text.autoconfig.particle-plus.option.greenValue.@Tooltip": "Green color component (0-255). Default: 255 (White)",
+  
+  "text.autoconfig.particle-plus.option.blueValue": "Blue Color",
+  "text.autoconfig.particle-plus.option.blueValue.@Tooltip": "Blue color component (0-255). Default: 255 (White)"
+}

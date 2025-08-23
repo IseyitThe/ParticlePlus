@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "particle-plus",
+  "version": "${version}",
+  "name": "Particle Plus",
+  "description": "Customize invisibility potion particles with custom colors, size and count",
+  "authors": ["Seyit"],
+  "contact": {
+    "homepage": "https://github.com/IseyitThe/ParticlePlus"
+  },
+  "license": "All-Rights-Reserved",
+  "icon": "assets/particle-plus/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "me.seyit.ParticlePlus"
+    ],
+    "modmenu": [
+      "me.seyit.integration.ModMenuIntegration"
+    ]
+  },
+  "depends": {
+    "fabricloader": "*",
+    "fabric-api": "*",
+    "minecraft": "1.20.x",
+    "cloth-config": ">=10.0.0"
+  },
+  "suggests": {
+    "modmenu": "*"
+  },
+  "custom": {
+    "modmenu": {
+      "badges": ["client"]
+    }
+  }
+}
