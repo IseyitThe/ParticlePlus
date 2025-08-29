@@ -21,9 +21,10 @@ public class ParticlePlus implements ClientModInitializer {
         AutoConfig.register(ParticlePlusConfig.class, GsonConfigSerializer::new);
         CONFIG = AutoConfig.getConfigHolder(ParticlePlusConfig.class).getConfig();
         
-        LOGGER.info("Config loaded - Particle Count: {}, Particle Size: {}, Colors: R{} G{} B{}", 
-            CONFIG.particleMultiplier, CONFIG.particleSize, 
-            CONFIG.redValue, CONFIG.greenValue, CONFIG.blueValue);
+        int[] rgb = CONFIG.getRGBFromHex();
+        LOGGER.info("Config loaded - Particle Count: {}, Particle Size: {}, Color Hex: {} (RGB: {},{},{})", 
+            CONFIG.particleMultiplier, CONFIG.particleSize, CONFIG.colorHex,
+            rgb[0], rgb[1], rgb[2]);
         
         KeyBindings.registerKeyBindings();
         InvisibilityParticleSpawner.register();

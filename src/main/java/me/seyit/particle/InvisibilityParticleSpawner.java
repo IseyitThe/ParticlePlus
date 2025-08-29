@@ -28,9 +28,10 @@ public class InvisibilityParticleSpawner {
         try {
             client.options.getParticles().setValue(ParticlesMode.ALL);
             
-            double red = ParticlePlus.CONFIG.redValue / 255.0;
-            double green = ParticlePlus.CONFIG.greenValue / 255.0; 
-            double blue = ParticlePlus.CONFIG.blueValue / 255.0;
+            int[] rgb = ParticlePlus.CONFIG.getRGBFromHex();
+            double red = rgb[0] / 255.0;
+            double green = rgb[1] / 255.0;
+            double blue = rgb[2] / 255.0;
             
             for (int i = 0; i < ParticlePlus.CONFIG.particleMultiplier; i++) {
                 double offsetX = (Math.random() - 0.5) * 0.8;
