@@ -14,7 +14,6 @@ public class ParticlePlusConfig implements ConfigData {
     public int particleSize = 2;
     
     @ConfigEntry.Gui.Tooltip(count = 1)
-    @ConfigEntry.Gui.RequiresRestart
     public String colorHex = "#FFFFFF";
 
     @ConfigEntry.Gui.Tooltip(count = 3)
