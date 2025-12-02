@@ -3,7 +3,9 @@ package me.seyit.particle;
 import me.seyit.ParticlePlus;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.particle.ParticlesMode;
 import net.minecraft.particle.TintedParticleEffect;
@@ -18,13 +20,27 @@ public class InvisibilityParticleSpawner {
             tickCounter++;
             if (tickCounter % 2 != 0) return;
 
-            if (client.player.hasStatusEffect(StatusEffects.INVISIBILITY)) {
-                spawnCustomInvisibilityParticles(client);
+            for (AbstractClientPlayerEntity player : client.world.getPlayers()) {
+                if (player == client.player) continue;
+                
+                if (player.isInvisible()) {
+                    spawnCustomInvisibilityParticlesForEntity(client, player);
+                }
+            }
+
+            for (Entity entity : client.world.getEntities()) {
+                if (entity instanceof LivingEntity livingEntity) {
+                    if (entity instanceof AbstractClientPlayerEntity) continue;
+                    
+                    if (livingEntity.isInvisible()) {
+                        spawnCustomInvisibilityParticlesForEntity(client, livingEntity);
+                    }
+                }
             }
         });
     }
 
-    private static void spawnCustomInvisibilityParticles(MinecraftClient client) {
+    private static void spawnCustomInvisibilityParticlesForEntity(MinecraftClient client, LivingEntity entity) {
         ParticlesMode originalSetting = client.options.getParticles().getValue();
 
         try {
@@ -35,14 +51,12 @@ public class InvisibilityParticleSpawner {
             double green = rgb[1] / 255.0;
             double blue = rgb[2] / 255.0;
 
+            double entityHeight = entity.getHeight();
+
             for (int i = 0; i < ParticlePlus.CONFIG.particleMultiplier; i++) {
                 double offsetX = (Math.random() - 0.5) * 0.8;
-                double offsetY = Math.random() * 2.0;
+                double offsetY = Math.random() * entityHeight;
                 double offsetZ = (Math.random() - 0.5) * 0.8;
-
-                double velX = (Math.random() - 0.5) * 0.03;
-                double velY = Math.random() * 0.06;
-                double velZ = (Math.random() - 0.5) * 0.03;
 
                 double particleSize = ParticlePlus.CONFIG.particleSize * 0.1;
 
@@ -53,9 +67,9 @@ public class InvisibilityParticleSpawner {
 
                     client.world.addParticleClient(
                             TintedParticleEffect.create(ParticleTypes.ENTITY_EFFECT, (float)red, (float)green, (float)blue),
-                        client.player.getX() + offsetX + sizeOffsetX,
-                        client.player.getY() + offsetY + sizeOffsetY,
-                        client.player.getZ() + offsetZ + sizeOffsetZ,
+                        entity.getX() + offsetX + sizeOffsetX,
+                        entity.getY() + offsetY + sizeOffsetY,
+                        entity.getZ() + offsetZ + sizeOffsetZ,
                         0, 0, 0
                     );
                 }
