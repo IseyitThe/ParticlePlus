@@ -18,7 +18,7 @@ public class KeyBindings {
             "key.particle-plus.config",
             InputUtil.Type.KEYSYM,
             GLFW.GLFW_KEY_N,
-            "category.particle-plus"
+            KeyBinding.Category.MISC
         ));
         
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
