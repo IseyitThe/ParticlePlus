@@ -2,25 +2,25 @@ package me.seyit.particle;
 
 import me.seyit.ParticlePlus;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.particle.ParticlesMode;
-import net.minecraft.particle.TintedParticleEffect;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.core.particles.ColorParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ParticleStatus;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 
 public class InvisibilityParticleSpawner {
     private static int tickCounter = 0;
 
     public static void register() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            if (client.world == null || client.player == null) return;
+            if (client.level == null || client.player == null) return;
 
             tickCounter++;
             if (tickCounter % 2 != 0) return;
 
-            for (AbstractClientPlayerEntity player : client.world.getPlayers()) {
+            for (AbstractClientPlayer player : client.level.players()) {
                 if (player == client.player) continue;
                 
                 if (player.isInvisible()) {
@@ -28,9 +28,9 @@ public class InvisibilityParticleSpawner {
                 }
             }
 
-            for (Entity entity : client.world.getEntities()) {
+            for (Entity entity : client.level.entitiesForRendering()) {
                 if (entity instanceof LivingEntity livingEntity) {
-                    if (entity instanceof AbstractClientPlayerEntity) continue;
+                    if (entity instanceof AbstractClientPlayer) continue;
                     
                     if (livingEntity.isInvisible()) {
                         spawnCustomInvisibilityParticlesForEntity(client, livingEntity);
@@ -40,18 +40,18 @@ public class InvisibilityParticleSpawner {
         });
     }
 
-    private static void spawnCustomInvisibilityParticlesForEntity(MinecraftClient client, LivingEntity entity) {
-        ParticlesMode originalSetting = client.options.getParticles().getValue();
+    private static void spawnCustomInvisibilityParticlesForEntity(Minecraft client, LivingEntity entity) {
+        ParticleStatus originalSetting = client.options.particles().get();
 
         try {
-            client.options.getParticles().setValue(ParticlesMode.ALL);
+            client.options.particles().set(ParticleStatus.ALL);
 
             int[] rgb = ParticlePlus.CONFIG.getRGBFromHex();
             double red = rgb[0] / 255.0;
             double green = rgb[1] / 255.0;
             double blue = rgb[2] / 255.0;
 
-            double entityHeight = entity.getHeight();
+            double entityHeight = entity.getBbHeight();
 
             for (int i = 0; i < ParticlePlus.CONFIG.particleMultiplier; i++) {
                 double offsetX = (Math.random() - 0.5) * 0.8;
@@ -65,8 +65,8 @@ public class InvisibilityParticleSpawner {
                     double sizeOffsetY = (Math.random() - 0.5) * particleSize;
                     double sizeOffsetZ = (Math.random() - 0.5) * particleSize;
 
-                    client.world.addParticleClient(
-                            TintedParticleEffect.create(ParticleTypes.ENTITY_EFFECT, (float)red, (float)green, (float)blue),
+                    client.level.addParticle(
+                        ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, (float) red, (float) green, (float) blue),
                         entity.getX() + offsetX + sizeOffsetX,
                         entity.getY() + offsetY + sizeOffsetY,
                         entity.getZ() + offsetZ + sizeOffsetZ,
@@ -75,7 +75,7 @@ public class InvisibilityParticleSpawner {
                 }
             }
         } finally {
-            client.options.getParticles().setValue(originalSetting);
+            client.options.particles().set(originalSetting);
         }
     }
 }

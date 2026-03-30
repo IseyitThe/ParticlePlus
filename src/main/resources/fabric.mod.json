@@ -22,8 +22,8 @@
   "depends": {
     "fabricloader": "*",
     "fabric-api": "*",
-    "minecraft": ">=1.21.9",
-    "cloth-config": ">=10.0.0"
+    "minecraft": ">=26.1",
+    "cloth-config": "*"
   },
   "suggests": {
     "modmenu": "*"
