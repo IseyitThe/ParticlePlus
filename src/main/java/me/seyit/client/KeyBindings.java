@@ -24,7 +24,7 @@ public class KeyBindings {
             while (openConfigKey.consumeClick()) {
                 if (client.player != null) {
                     try {
-                        client.setScreen(AutoConfigClient.getConfigScreen(ParticlePlusConfig.class, client.screen).get());
+                        client.setScreenAndShow(AutoConfigClient.getConfigScreen(ParticlePlusConfig.class, null).get());
                     } catch (Exception e) {
                         client.player.sendSystemMessage(
                             Component.literal("The config GUI couldn't be opened. Make sure Cloth Config is installed")
